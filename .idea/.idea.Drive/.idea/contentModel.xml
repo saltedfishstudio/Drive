@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Unity Technologies\Github\Drive" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Tanks" t="Include">
+          <e p="Editor" t="Include">
+            <e p="MoveSceneViewCamera.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Runtime" t="Include">
+              <e p="Behaviour" t="Include">
+                <e p="Crush.cs" t="Include" />
+                <e p="Health.cs" t="Include" />
+                <e p="Movement.cs" t="Include" />
+              </e>
+              <e p="Camera" t="Include">
+                <e p="CameraControl.cs" t="Include" />
+              </e>
+              <e p="Managers" t="Include">
+                <e p="GameManager.cs" t="Include" />
+                <e p="TankManager.cs" t="Include" />
+              </e>
+              <e p="Shell" t="Include">
+                <e p="ShellExplosion.cs" t="Include" />
+              </e>
+              <e p="UI" t="Include">
+                <e p="EndCanvas.cs" t="Include" />
+                <e p="GameCanvas.cs" t="Include" />
+                <e p="ICanvas.cs" t="Include" />
+                <e p="MainMenuCanvas.cs" t="Include" />
+                <e p="UIDirectionControl.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Tests" t="Include">
+              <e p="InputTest.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="TextMesh Pro" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="LiberationSans - OFL.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="LineBreaking Following Characters.txt" t="Include" />
+            <e p="LineBreaking Leading Characters.txt" t="Include" />
+            <e p="Shaders" t="Include">
+              <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+              <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+              <e p="TMP_Bitmap.shader" t="Include" />
+              <e p="TMP_SDF Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+              <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+              <e p="TMP_SDF-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface-Mobile.shader" t="Include" />
+              <e p="TMP_SDF-Surface.shader" t="Include" />
+              <e p="TMP_SDF.shader" t="Include" />
+              <e p="TMP_Sprite.shader" t="Include" />
+              <e p="TMPro.cginc" t="Include" />
+              <e p="TMPro_Properties.cginc" t="Include" />
+              <e p="TMPro_Surface.cginc" t="Include" />
+            </e>
+          </e>
+          <e p="Sprites" t="Include">
+            <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Drive.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+    <e p="C:\Users\Jeon\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Jeon\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Drive.207934843.00" t="ExcludeRecursive" />
+  </component>
+</project>
