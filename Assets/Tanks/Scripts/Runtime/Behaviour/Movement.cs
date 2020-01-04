@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SaltedFishStudio.RoadKill
 {
@@ -12,19 +13,28 @@ namespace SaltedFishStudio.RoadKill
         public AudioClip m_EngineDriving;           // Audio to play when the tank is moving.
 		public float m_PitchRange = 0.2f;           // The amount by which the pitch of the engine noises can vary.
 
-        private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
-        private string m_TurnAxisName;              // The name of the input axis for turning.
         private Rigidbody m_Rigidbody;              // Reference used to move the tank.
         private float m_MovementInputValue;         // The current value of the movement input.
         private float m_TurnInputValue;             // The current value of the turn input.
         private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
         private ParticleSystem[] m_particleSystems; // References to all the particles systems used by the Tanks
+        bool setup;
+        
+        RectTransform img1;
+        RectTransform img2;
 
         private void Awake ()
         {
             m_Rigidbody = GetComponent<Rigidbody> ();
         }
 
+        public void SetUp(RectTransform img1, RectTransform img2)
+        {
+            setup = true;
+
+            this.img1 = img1;
+            this.img2 = img2;
+        }
 
         private void OnEnable ()
         {
@@ -62,8 +72,6 @@ namespace SaltedFishStudio.RoadKill
         private void Start ()
         {
             // The axes names are based on player number.
-            m_MovementAxisName = "Vertical" + m_PlayerNumber;
-            m_TurnAxisName = "Horizontal" + m_PlayerNumber;
 
             // Store the original pitch of the audio source.
             m_OriginalPitch = m_MovementAudio.pitch;
@@ -72,20 +80,45 @@ namespace SaltedFishStudio.RoadKill
         bool isTouching = false;
         Vector2 startPos = Vector2.zero;
 
-        private void Update ()
+        float dir = 0f;
+
+        void OnGUI()
+        {
+            GUI.color = Color.green;
+            GUI.Label(new Rect(120, 160, 240, 60), $"{dbgtext}");
+        }
+
+        string dbgtext = "";
+        void Update ()
         {
             // Store the value of both input axes.
             try
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    startPos = Input.mousePosition;
-                    isTouching = true;
+                    if (Input.mousePosition.y < Screen.height * .5f)
+                    {
+                        startPos = Input.mousePosition;
+                        isTouching = true;
+
+                        if (setup)
+                        {
+                            img1.gameObject.SetActive(true);
+                            img2.gameObject.SetActive(true);
+                            img1.anchoredPosition = startPos;
+                        }
+                    }
                 }
 
                 if (Input.GetMouseButtonUp(0))
                 {
                     isTouching = false;
+                    // dir = transform.rotation.y;
+                    if (setup)
+                    {
+                        img1.gameObject.SetActive(false);
+                        img2.gameObject.SetActive(false);
+                    }
                 }
 
                 if (isTouching)
@@ -93,50 +126,26 @@ namespace SaltedFishStudio.RoadKill
                     Vector2 touch = Input.mousePosition;
                     Vector2 gap = touch - startPos;
 
-                    if (touch.y < Screen.height * .5f)
-                    {
-                        float forward = Mathf.LerpUnclamped(0, 1, gap.y / (Screen.height * .25f));
-                        float right = Mathf.LerpUnclamped(0, 1, gap.x / (Screen.width * .25f));
-
-                        m_MovementInputValue = forward;
-                        m_TurnInputValue = right;
-                    }
-                    else
-                    {
-                        m_MovementInputValue = 0.0f;
-                        m_TurnInputValue = 0.0f;
-                    }
+                    float atanRad = Mathf.Atan2(gap.y, gap.x);
+                    float atan = atanRad * 57.2958f;
                     
-                    // if (gap.y < Screen.height * .5f)
-                    // {
-                    //     float left = Screen.width * .33f;
-                    //     
-                    //     // move left
-                    //     if (gap.x < left)
-                    //     {
-                    //         m_TurnInputValue = Mathf.Lerp(-1, 0, gap.x / left);
-                    //     }
-                    //     
-                    //     // move right
-                    //     else if (gap.x > left * 2)
-                    //     {
-                    //         m_TurnInputValue = Mathf.Lerp(0, 1, (gap.x - left * 2) / left);
-                    //     }
-                    //
-                    //     // move forward
-                    //
-                    //     m_MovementInputValue = 1.0f;
-                    // }
-                    // else
-                    // {
-                    //     m_MovementInputValue = 0.0f;
-                    //     m_TurnInputValue = 0.0f;
-                    // }
+                    float radius = img1.sizeDelta.x * .5f;
+                    var y = radius * Mathf.Sin(atanRad);
+                    var x = radius * Mathf.Cos(atanRad);
+                    
+                    var forward = Mathf.Clamp(gap.magnitude,0f, radius);
+                    img2.anchoredPosition = startPos + gap.normalized * forward;
+
+                    if (forward > 0.05f)
+                    {
+                        dir = -(atan - 90f) + 60f;
+                    }
+
+                    m_MovementInputValue = forward / radius;
                 }
                 else
                 {
                     m_MovementInputValue = 0.0f;
-                    m_TurnInputValue = 0.0f;
                 }
             }
             catch
@@ -146,7 +155,7 @@ namespace SaltedFishStudio.RoadKill
         }
 
 
-        private void EngineAudio ()
+        void EngineAudio ()
         {
             // If there is no input (the tank is stationary)...
             if (Mathf.Abs (m_MovementInputValue) < 0.1f && Mathf.Abs (m_TurnInputValue) < 0.1f)
@@ -176,7 +185,6 @@ namespace SaltedFishStudio.RoadKill
 
         private void FixedUpdate ()
         {
-            // Adjust the rigidbodies position and orientation in FixedUpdate.
             Move ();
             Turn ();
         }
@@ -185,7 +193,7 @@ namespace SaltedFishStudio.RoadKill
         private void Move ()
         {
             // Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
-            Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
+            Vector3 movement = transform.forward * (m_MovementInputValue * m_Speed * Time.deltaTime);
 
             // Apply this movement to the rigidbody's position.
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
@@ -194,14 +202,10 @@ namespace SaltedFishStudio.RoadKill
 
         private void Turn ()
         {
-            // Determine the number of degrees to be turned based on the input, speed and time between frames.
-            float turn = m_TurnInputValue * m_TurnSpeed * Time.deltaTime;
 
-            // Make this into a rotation in the y axis.
-            Quaternion turnRotation = Quaternion.Euler (0f, turn, 0f);
-
-            // Apply this rotation to the rigidbody's rotation.
-            m_Rigidbody.MoveRotation (m_Rigidbody.rotation * turnRotation);
+            // 회전
+            m_Rigidbody.MoveRotation(Quaternion.Slerp(m_Rigidbody.rotation, Quaternion.Euler(new Vector3(0, dir, 0)),
+                Time.fixedDeltaTime * m_TurnSpeed));
         }
     }
 }

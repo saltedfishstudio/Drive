@@ -40,7 +40,7 @@ namespace SaltedFishStudio.RoadKill.Manager
         }
 
         private Movement m_Movement;                        // Reference to tank's movement script, used to disable and enable control.
-        private Crush m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
+        // private Crush m_Shooting;                        // Reference to tank's shooting script, used to disable and enable control.
         private GameObject m_CanvasGameObject;                  // Used to disable the world space UI during the Starting and Ending phases of each round.
 
 
@@ -48,12 +48,12 @@ namespace SaltedFishStudio.RoadKill.Manager
         {
             // Get references to the components.
             m_Movement = m_Instance.GetComponent<Movement> ();
-            m_Shooting = m_Instance.GetComponent<Crush> ();
+            // m_Shooting = m_Instance.GetComponent<Crush> ();
             m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas> ().gameObject;
 
             // Set the player numbers to be consistent across the scripts.
             m_Movement.m_PlayerNumber = m_PlayerNumber;
-            m_Shooting.m_PlayerNumber = m_PlayerNumber;
+            // m_Shooting.m_PlayerNumber = m_PlayerNumber;
 
             // Get all of the renderers of the tank.
             MeshRenderer[] renderers = m_Instance.GetComponentsInChildren<MeshRenderer> ();
@@ -71,7 +71,7 @@ namespace SaltedFishStudio.RoadKill.Manager
         public void DisableControl ()
         {
             m_Movement.enabled = false;
-            m_Shooting.enabled = false;
+            // m_Shooting.enabled = false;
 
             m_CanvasGameObject.SetActive (false);
         }
@@ -81,7 +81,7 @@ namespace SaltedFishStudio.RoadKill.Manager
         public void EnableControl ()
         {
             m_Movement.enabled = true;
-            m_Shooting.enabled = true;
+            // m_Shooting.enabled = true;
 
             m_CanvasGameObject.SetActive (true);
         }
